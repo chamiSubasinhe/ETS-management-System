@@ -1,0 +1,23 @@
+function unzipArchive($file, $destinationFolder){
+02
+    // create ZipArchive object
+03
+    $zip = new ZipArchive() ;
+04
+    // open archive
+05
+    if ($zip->open($file) !== TRUE) {
+06
+        die ('Could not open archive');
+07
+    }
+08
+    // extract it's content to destination folder
+09
+    $zip->extractTo($destinationFolder);
+10
+    // close archive
+11
+    $zip->close();
+12
+}

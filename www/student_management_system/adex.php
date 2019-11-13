@@ -1,0 +1,371 @@
+<?php
+	
+
+?>
+<script>
+	function fill(){
+		document.getElementById("ExamID")value='IT008888';	
+		document.getElementById("duration")value='2';
+		
+	}
+	function fill2(){
+		document.getElementById("stuID")value='KGSTIT008888';
+		document.getElementById("courseID")value='008';
+		document.getElementById("moduleID")value='IT08';
+		
+	}
+	</script>
+<!-- B connection ---------------------------------------->
+	<?php include 'static/dbconnection.php';?>
+	<!--# end DB connection -->
+	<?php
+		$message='';
+		$courseID='';
+		$moduleID='';
+		$duration='';
+		$ExamID='';
+		$flag=3;
+		if (isset($_POST['submit'])){
+		
+			$ExamID=mysqli_real_escape_string($conn,$_POST["ExamID"]);
+			$courseID=mysqli_real_escape_string($conn,$_POST["courseID"]);
+			$moduleID=mysqli_real_escape_string($conn,$_POST["moduleID"]);
+			$duration=mysqli_real_escape_string($conn,$_POST["duration"]);
+			$staffId=mysqli_real_escape_string($conn,$_POST["staffId"]);
+			
+
+		$sql="INSERT INTO exam (ExamID,courseID,moduleID,staffID,duration) VALUES('".$ExamID."','".$courseID."','".$moduleID."','".$staffId."','".$duration."')";
+			$result=mysqli_query($conn,$sql);
+			if($result){
+				$message="New Record added";
+				$flag=1;
+			}
+			else{
+				$message="Not added new recrode.. ";
+				$flag=0;
+			}
+		}
+		
+	?>
+	
+	<?php
+	$message2='';
+	$flag2=3;
+	$resultCount =0;
+	$ExamID='';
+	$courseID='';
+	$moduleID='';
+	
+	if (isset($_POST['search'])){
+		
+	if(!empty($_POST['ExamID']) && !empty($_POST['courseID']) && !empty($_POST['moduleID'])){
+		$sql_find_exam = "SELECT ExamID,courseID,moduleID,duration FROM exam WHERE stuID = '".$ExamID."' AND courseID='".$courseID."' AND moduleID='".$moduleID."'  ";
+		
+	}else{
+		
+		if(isset($_POST['ExamID'])){
+			$ExamID=mysqli_real_escape_string($conn, $_POST['ExamID']);
+			$sql_find_exam = "SELECT ExamID,courseID,moduleID,duration FROM exam WHERE stuID = '".$ExamID."' ";
+		}
+		if(isset($_POST['courseID'])){
+			$courseID=mysqli_real_escape_string($conn,$_POST['courseID']);
+			$sql_find_exam = "SELECT ExamID,courseID,moduleID,duration FROM exam WHERE courseID='".$courseID."' ";
+		}
+		if(isset($_POST['moduleID'])){
+			$moduleID=mysqli_real_escape_string($conn,$_POST['moduleID']);
+			$sql_find_exam = "SELECT ExamID,courseID,moduleID,duration FROM exam WHERE moduleID='".$moduleID."'  ";
+			
+		}
+	}
+		echo $sql_find_exam;
+		
+		
+	
+		$result = mysqli_query($conn, $sql_find_exam);
+		$resultCount = mysqli_num_rows($result);
+		
+	if($resultCount > 0){
+		$message2= $resultCount." records found";
+			$flag2=1;
+			
+		}
+	
+		else{
+				$message2="No any record found"; 
+				$flag2=0;
+			}
+				
+	
+	} 
+	?>
+	
+	
+	
+	<!-- Load system variables ---------------------------------------->
+	<?php include 'static/getVariables.php';?>
+	<!--# End Load system variables -->
+
+<!DOCTYPE html>
+<html>
+
+	<!-- Page head --------------------------------------->
+	<?php include 'static/head.php';?>
+	<!--# end Page Loader -->
+	
+	<body class="theme-red">
+	<!-- Bootstrap Material Datetime Picker Css -->
+    <link href="plugins/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+
+
+    <!-- Page Loader ------------------------------------>
+	<?php include 'static/preloader.php';?>
+    <!-- #END# Page Loader -->
+	
+    <!-- Overlay For Sidebars --------------------------->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+	
+    <!-- Search Bar ------------------------------------->
+    <?php include 'static/searchbar.php';?>
+    <!-- #END# Search Bar -->
+	
+    <!-- Top Bar ---------------------------------------->
+    <?php include 'static/topnav.php';?>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -------------------------------->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info ---------------------->
+			<?php include 'static/userinfo.php';?>
+            <!-- #User Info -->
+			
+            <!-- Menu --------------------------->
+			<?php include 'static/menu.php';?>
+            <!-- #Menu -->
+			
+            <!-- Footer ------------------------->
+            <?php include 'static/footer.php';?>
+            <!-- #Footer -->
+			
+        </aside>
+        <!-- #END# Left Sidebar -->
+		
+        <!-- Right Sidebar ----------------------------->
+        <?php include 'static/rightsidebar.php';?>
+        <!-- #END# Right Sidebar -->
+		
+    </section>
+
+	
+	
+	
+    <section class="content">
+	<!-- Main page content  ----------------------------->
+        
+                   
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>ADD EXAM DETAILS</h2>
+                            <div class="alert alert-<?php if($flag==0){echo 'danger';}else if($flag==1){ echo 'success';} ?> alert-dismissible" data-auto-dismiss="5000" role="alert">
+						<?php echo $message; ?>
+                            </div>
+                        </div>
+						
+                        <div class="body">
+                            <form id="form_validation"  action="adex.php" method="POST">
+							<div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="ExamID" pattern="([A-Z][A-Z][0-9][0-9])" required>
+                                        <label class="form-label">Exam id<label>
+                                    </div>
+                                </div>	
+									<div class="form-group form-float">
+                                    <div class="form-line">
+										 <select name="courseID" class="form-control show-tick">
+                                        <option value=" courseID">-- PLEASE SELECT courseID--</option>
+											<?php
+				
+							$query2=mysqli_query($conn,"select * from course ");
+							while($row2=mysqli_fetch_array($query2)){
+			?>
+                                        <option value="<?php echo $row2["courseID"]; ?>"><?php echo $row2["courseID"]; ?></option>
+										
+		<?php } ?>
+                                    </select>
+                                       
+                                    </div>
+                                </div>
+                           
+								<div class="form-group form-float">
+                                    <div class="form-line">
+										 <select name="moduleID" class="form-control show-tick">
+                                        <option value="moduleID">-- PLEASE SELECT moduleID--</option>
+											<?php
+				
+							$query2=mysqli_query($conn,"select * from  module");
+							while($row2=mysqli_fetch_array($query2)){
+			?>
+                                        <option value="<?php echo $row2["moduleID"]; ?>"><?php echo $row2["moduleID"]; ?></option>
+										
+		<?php } ?>
+                                    </select>
+                                       
+                                    </div>
+                                </div>
+								
+									<div class="form-group form-float">
+                                    <div class="form-line">
+										 <select name="staffId" class="form-control show-tick">
+                                        <option value=" staffId">-- PLEASE SELECT staffID--</option>
+											<?php
+				
+							$query2=mysqli_query($conn,"select * from staff ");
+							while($row2=mysqli_fetch_array($query2)){
+			?>
+                                        <option value="<?php echo $row2["staffId"]; ?>"><?php echo $row2["staffId"]; ?></option>
+										
+		<?php } ?>
+                                    </select>
+                                        
+                                    </div>
+                                </div>
+								
+								<div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="duration" pattern="([1-5])" required>
+                                        <label class="form-label">Duration<label>
+                                    </div>
+                                </div>	
+                               
+                                <button class="btn btn-primary waves-effect" type="submit" name="submit">SUBMIT</button>
+								<a class="btn btn-primary waves-effect" onclick="fill()" >Demo Data</a>
+                            </form>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>  
+			
+                   
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>SEARCH EXAM DETAILS</h2>
+                           <div class="alert alert-<?php if($flag2==0){echo 'danger';}else if($flag2==1){ echo 'success';} ?> alert-dismissible" data-auto-dismiss="5000" role="alert">
+						<?php echo $message2; ?>
+                            </div>
+							
+                        </div>
+						
+                        <div class="body">
+                            <form id="form_validation"  action="updateex.php" method="POST">
+							<div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="ExamID" >
+                                        <label class="form-label">Exam id<label>
+                                    </div>
+                                </div>	
+									<div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="courseID" >
+                                        <label class="form-label">Course id<label>
+                                    </div>
+                                </div>	
+									<div class="form-group form-float">
+                                    <div class="form-line">
+                                        <input type="text" class="form-control" name="moduleID" >
+                                        <label class="form-label">Module id<label>
+                                    </div>
+                                </div>	
+								
+                               
+                                <button class="btn btn-primary waves-effect" type="submit" name="search">Search</button>
+								<a class="btn btn-primary waves-effect" onclick="fill2()" >Demo Data</a>
+                            </form>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>  
+			
+			
+			<?php if($resultCount>0){ ?>
+			<!-- Exportable Table -->
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="card">
+                        <div class="header">
+                            <h2>
+                                Search Result
+                            </h2>
+                           
+                        </div>
+                        <div class="body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover dataTable js-exportable">
+                                    <thead>
+                                        <tr>
+                                            <th>Exam ID</th>
+                                            <th>Course ID</th>
+                                            <th>Module ID</th>
+                                            <th>Marks</th>
+											<th></th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Exam ID</th>
+                                            <th>Course ID</th>
+                                            <th>Module ID</th>
+                                            <th>Marks</th>
+											 <th></th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+									<?php
+		$query2=mysqli_query($conn,$sql_find_exam);
+		while($row2=mysqli_fetch_array($query2)){
+			?>
+                                        <tr>
+                                            <td><?php echo $row2['ExamID']; ?></td>
+                                            <td><?php echo $row2['courseID']; ?></td>
+                                            <td><?php echo $row2['moduleID']; ?></td>
+                                            <td><?php echo $row2['duration']; ?></td>
+											<th><a href="updateex.php?ExamID=<?php echo $row2['ExamID']; ?>"><button class="btn btn-primary">Edit</button></a></th>
+                                        </tr>
+              <?php
+		}
+	?> 
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- #END# Exportable Table -->
+			<?php } ?>
+	<!--  Main page content ----------------------------->
+    </section>
+
+	
+	
+	
+	
+	
+	
+		<!-- Javascript --------------------------------->
+		<?php include 'static/scripts.php';?>
+		<!-- #END# Javascript  -->
+		 <!-- Bootstrap Material Datetime Picker Plugin Js -->
+    <script src="plugins/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+
+		
+</body>
+
+</html>
+
+

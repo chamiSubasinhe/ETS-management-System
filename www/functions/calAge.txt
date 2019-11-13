@@ -1,0 +1,33 @@
+function getAge($birthdate = '0000-00-00') {
+02
+    if ($birthdate == '0000-00-00') return 'Unknown';
+03
+    $bits = explode('-', $birthdate);
+04
+    $age = date('Y') - $bits[0] - 1;
+05
+    $arr[1] = 'm';
+06
+    $arr[2] = 'd';
+07
+    for ($i = 1; $arr[$i]; $i++) {
+08
+        $n = date($arr[$i]);
+09
+        if ($n < $bits[$i])
+10
+            break;
+11
+        if ($n > $bits[$i]) {
+12
+            ++$age;
+13
+            break;
+14
+        }
+15
+    }
+16
+    return $age;
+17
+}

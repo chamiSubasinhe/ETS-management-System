@@ -1,0 +1,91 @@
+<?php 
+/*
+* Google Metirial Design Template designed Asiri Hewage
+* asiriofficial@gmail.com
+* All Rights Reserved C 2018
+* http://asirihewage.business.site
+*/
+?>
+<!DOCTYPE html>
+<html>
+
+	<!-- Page head --------------------------------------->
+	<?php include 'head.php';?>
+	<!--# end Page Loader -->
+	
+
+    <!-- Page Loader ------------------------------------>
+	<?php include 'preloader.php';?>
+    <!-- #END# Page Loader -->
+	
+    <!-- Overlay For Sidebars --------------------------->
+    <div class="overlay"></div>
+    <!-- #END# Overlay For Sidebars -->
+	
+    <!-- Search Bar ------------------------------------->
+    <?php include 'searchbar.php';?>
+    <!-- #END# Search Bar -->
+	
+    <!-- Top Bar ---------------------------------------->
+    <?php include 'topnav.php';?>
+    <!-- #Top Bar -->
+    <section>
+        <!-- Left Sidebar -------------------------------->
+        <aside id="leftsidebar" class="sidebar">
+            <!-- User Info ---------------------->
+			<?php include 'userinfo.php';?>
+            <!-- #User Info -->
+			
+            <!-- Menu --------------------------->
+			<?php include 'menu.php';?>
+            <!-- #Menu -->
+			
+            <!-- Footer ------------------------->
+            <?php include 'footer.php';?>
+            <!-- #Footer -->
+			
+        </aside>
+        <!-- #END# Left Sidebar -->
+		
+        <!-- Right Sidebar ----------------------------->
+        <?php include 'rightsidebar.php';?>
+        <!-- #END# Right Sidebar -->
+		
+    </section>
+
+	
+	
+	
+    <section class="content">
+	<!-- Main page content  ----------------------------->
+        <div class="container-fluid">
+            <div class="block-header">
+                <h2>BLANK PAGE</h2>
+            </div>
+		<!-- Main page content  -------//---------------------->
+
+		
+		
+		
+		
+		<!-- Main page content  --------//--------------------->		
+			
+			
+			
+        </div>
+	<!--  Main page content ----------------------------->
+    </section>
+
+	
+	
+	
+	
+	
+	
+		<!-- Javascript --------------------------------->
+		<?php include 'scripts.php';?>
+		<!-- #END# Javascript  -->
+		
+</body>
+
+</html>
